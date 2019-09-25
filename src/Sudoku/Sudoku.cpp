@@ -172,21 +172,49 @@ int main(int argc, char *argv[])
 {
 	//std::ios::sync_with_stdio(false);
 	//cin.tie(0);
-	m = atoi(argv[2]);//读取参数
-	n = atoi(argv[4]);
-	char *inputname = argv[6];
-	char *outputname= argv[8];
-	fp1 = fopen(inputname, "r");//打开输入文件
-	if (fp1 == NULL)
+	//m = atoi(argv[2]);//读取参数
+	//n = atoi(argv[4]);
+	//char *inputname = argv[6];
+	//char *outputname= argv[8];
+	string a, b, c, d;
+	a = "-m";
+	b = "-n";
+	c = "-i";
+	d = "-o";
+	fp1 = NULL;
+	fp2 = NULL;
+	for (int i = 1; i < argc; i++)
 	{
-		return -1;
+		if (argv[i] == c)
+		{
+			fp1 = fopen(argv[++i], "r");//打开输入文件
+			if (fp1 == NULL)
+			{
+				return -1;
+			}
+			continue;
+		}
+		if (argv[i] == d)
+		{
+			fp2 = fopen(argv[++i], "w");//打开输出文件，清空文件
+			if (fp2 == NULL) //
+			{
+				return -1;
+			}
+			continue;
+		}
+		if (argv[i] == a)
+		{
+			m = argv[++i][0] - '0';
+			continue;
+		}
+		if (argv[i] == b)
+		{
+			n = argv[++i][0] - '0';
+			continue;
+		}
 	}
-	fp2 = fopen(outputname, "w");//打开输出文件，清空文件
-	if (fp2 == NULL) //
-	{
-		return -1;
-	}
-	fclose(fp2);
+	
 	while (n--)
 	{
 		mst(s, 0);//初始化 
@@ -198,16 +226,23 @@ int main(int argc, char *argv[])
 				fscanf(fp1, "%d", &s[i][j]);//文件读入
 			}
 		}
-		fp2 = fopen(outputname, "a");//打开输出文件
+		//fp2 = fopen(outputname, "a");//打开输出文件
 		dfs(0);	//开始填数 
 		if (n > 0)
 		{
 			fprintf(fp2, "\n");//输出至文件
 
 		}
+	}
+	if (fp1 != NULL)
+	{
+		fclose(fp1);//关闭输入文件
+	}
+	
+	if (fp2 != NULL)
+	{
 		fclose(fp2);//关闭输出文件
 	}
-	fclose(fp1);//关闭输入文件
 	return 0;
 }
 /*2 9
